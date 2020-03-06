@@ -1,0 +1,3 @@
+echo "Compilation de Mike 6..."
+gcc -o mike6 mike6.c -lm
+echo "... [OK]"
