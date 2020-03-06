@@ -1,3 +1,5 @@
+0. Надо сохранить от Али ВСЕ полиморфизмы от ВСЕХ зверей и прогнать их.
+
 1. downlloaded and played with mike6.
 Начал с http://www.lifesci.sussex.ac.uk/CSE/test/ld.php (mike-6.tar.gz).
 разархивировал, пришел туда, написал фразу из "compiler": gcc -o mike6 mike6.c -lm и родился файл mike6 - даже без ошибок. (в одном из случаев дописал int перед main())
@@ -6,8 +8,35 @@
 И тогда все гонится ок: ./mike6 < FileWithInputFileName.txt > OutFile.txt 
 
 2. wrote CallMike6.sh - take 10 random different sequences from each species and calculate two test of recombination on my ubuntu laptop.
-Для СYTB получилось 934 зверя. 
-теперь надо бы отпарсить результаты и собрать p-value, correlation coeff и имя зверя. Далее - смотреть корреляции с тандемными повторами.
-Также параллельно надо сохранить от Али ВСЕ полиморфизмы от ВСЕХ зверей и прогнать их.
+Для СYTB получилось 934 зверя.
+
+MtDnaRecombination/body/1raw/PolymorphismsFromMutSpec/CytbTerminalBranches/XXXXXX_XXXXXX.CytB.terminals.nuc.fa => 
+CallMike6.sh
+=> MtDnaRecombination/body/2derived/PolymorphismsFromMutSpec/CytbTerminalBranches/_XXXXX.CytB.terminals.nuc.fa.mike6.10.txt
+
+3. wrote CollectMike6Results.sh - скрипт, который парсит результаты mike 6 и дерайвит /3results/Cytb.mike6.10.txt
+
+MtDnaRecombination/body/2derived/PolymorphismsFromMutSpec/CytbTerminalBranches/_XXXXX.CytB.terminals.nuc.fa.mike6.10.txt => 
+CollectMike6Results.sh
+=> MtDnaRecombination/body/3result/Cytb.mike6.10.txt
+
+4. Взял из Алининого репозитория файл с саммари мито геномов: https://github.com/Aragret/ComparativeGenomics/blob/TandRepeatsVersusEcology/Body/2Derived/MitGenomics.txt
+и положил это сюда: MtDnaRecombination/body/1raw/MitGenomics.txt
+
+5. R script to check correlation between tandem repeats and recombination:
+
+MtDnaRecombination/body/3result/Cytb.mike6.10.txt => 
+MtDnaRecombination/body/1raw/MitGenomics.txt => 
+MitoGenomicsAndRecomb.R
+
+
+
+
+
+ 
+
+
+
+
 
 
