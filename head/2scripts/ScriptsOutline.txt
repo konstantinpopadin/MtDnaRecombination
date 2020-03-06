@@ -1,0 +1,13 @@
+1. downlloaded and played with mike6.
+Начал с http://www.lifesci.sussex.ac.uk/CSE/test/ld.php (mike-6.tar.gz).
+разархивировал, пришел туда, написал фразу из "compiler": gcc -o mike6 mike6.c -lm и родился файл mike6 - даже без ошибок. (в одном из случаев дописал int перед main())
+Далее я его execute ./mike6
+Далее методом тыка понял что файлы можно скармливать в этот скрипт немного кривым способом - прописывая их имена в другом файле, например FileWithInputFileName.txt.  
+И тогда все гонится ок: ./mike6 < FileWithInputFileName.txt > OutFile.txt 
+
+2. wrote CallMike6.sh - take 10 random different sequences from each species and calculate two test of recombination on my ubuntu laptop.
+Для СYTB получилось 934 зверя. 
+теперь надо бы отпарсить результаты и собрать p-value, correlation coeff и имя зверя. Далее - смотреть корреляции с тандемными повторами.
+Также параллельно надо сохранить от Али ВСЕ полиморфизмы от ВСЕХ зверей и прогнать их.
+
+
