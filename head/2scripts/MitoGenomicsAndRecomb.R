@@ -23,36 +23,35 @@ boxplot(MitoRec[MitoRec$TAXON == 'Mammalia' & MitoRec$PValue < 0.1,]$REP.LengthO
 
 boxplot(MitoRec[MitoRec$TAXON == 'Mammalia' & MitoRec$REP.NumberOfTandemRepeats == 0,]$PValue,MitoRec[MitoRec$TAXON == 'Mammalia' & MitoRec$REP.NumberOfTandemRepeats > 0,]$PValue, notch = TRUE, outline = FALSE)
 
-##
+#### 
 
-A = nrow(MitoRec[MitoRec$TAXON == 'Mammalia' & MitoRec$REP.NumberOfTandemRepeats == 0 & MitoRec$PValue > 0.05,])  # 72
-B = nrow(MitoRec[MitoRec$TAXON == 'Mammalia' & MitoRec$REP.NumberOfTandemRepeats == 0 & MitoRec$PValue <= 0.05,]) # 10
-C = nrow(MitoRec[MitoRec$TAXON == 'Mammalia' & MitoRec$REP.NumberOfTandemRepeats > 0 & MitoRec$PValue > 0.05,])  # 119
-D = nrow(MitoRec[MitoRec$TAXON == 'Mammalia' & MitoRec$REP.NumberOfTandemRepeats > 0 & MitoRec$PValue <= 0.05,]) # 23
-
-10/(10+72)  # 12% of specides without tandem repeats have recombination 
-23/(23+119) # 16% of species with tandem repeats have recombination
-
-## 
-
-A = nrow(MitoRec[MitoRec$TAXON == 'Mammalia' & MitoRec$REP.NumberOfTandemRepeats == 0 & MitoRec$PValue > 0.01,])  # 76
-B = nrow(MitoRec[MitoRec$TAXON == 'Mammalia' & MitoRec$REP.NumberOfTandemRepeats == 0 & MitoRec$PValue <= 0.01,]) # 6
-C = nrow(MitoRec[MitoRec$TAXON == 'Mammalia' & MitoRec$REP.NumberOfTandemRepeats > 0 & MitoRec$PValue > 0.01,])  # 132
-D = nrow(MitoRec[MitoRec$TAXON == 'Mammalia' & MitoRec$REP.NumberOfTandemRepeats > 0 & MitoRec$PValue <= 0.01,]) # 10
-
-6/(6+76)  # 7% of specides without tandem repeats have recombination 
-10/(10+132) # 7% of species with tandem repeats have recombination
-
-## 
+nrow(MitoRec[MitoRec$TAXON == 'Mammalia',]) # 224
+nrow(MitoRec[MitoRec$TAXON == 'Mammalia' & MitoRec$PValue <= 0.05,]) # 33
 
 A = nrow(MitoRec[MitoRec$TAXON == 'Mammalia' & MitoRec$REP.NumberOfTandemRepeats <= 1 & MitoRec$PValue > 0.05,])  # 128
 B = nrow(MitoRec[MitoRec$TAXON == 'Mammalia' & MitoRec$REP.NumberOfTandemRepeats <= 1 & MitoRec$PValue <= 0.05,]) # 16
 C = nrow(MitoRec[MitoRec$TAXON == 'Mammalia' & MitoRec$REP.NumberOfTandemRepeats > 1 & MitoRec$PValue > 0.05,])  # 63
 D = nrow(MitoRec[MitoRec$TAXON == 'Mammalia' & MitoRec$REP.NumberOfTandemRepeats > 1 & MitoRec$PValue <= 0.05,]) # 17
 
-16/(16+128)  # 11% of species with recombination 
-17/(17+63)   # 21% of species with recombination
+fisher.test(cbind(c(A,B),c(C,D)))
+16/(16+128)  # 11% of species with recombination 16+128
+17/(17+63)   # 21% of species with recombination 17+63
+# 80 + 144
 
+#### compare classes:
+table(MitoRec$TAXON)
+
+summary(MitoRec[MitoRec$TAXON == 'Mammalia',]$PValue)
+summary(MitoRec[MitoRec$TAXON == 'Amphibia',]$PValue)
+summary(MitoRec[MitoRec$TAXON == 'Reptilia',]$PValue)
+summary(MitoRec[MitoRec$TAXON == 'Actinopterygii',]$PValue)
+summary(MitoRec[MitoRec$TAXON == 'Aves',]$PValue)
+
+nrow(MitoRec[MitoRec$TAXON == 'Mammalia' & MitoRec$PValue <=0.01,]) / nrow(MitoRec[MitoRec$TAXON == 'Mammalia',]) # 7%
+nrow(MitoRec[MitoRec$TAXON == 'Aves' & MitoRec$PValue <=0.01,]) / nrow(MitoRec[MitoRec$TAXON == 'Aves',]) # 18%
+nrow(MitoRec[MitoRec$TAXON == 'Reptilia' & MitoRec$PValue <=0.01,]) / nrow(MitoRec[MitoRec$TAXON == 'Reptilia',]) # 8%
+nrow(MitoRec[MitoRec$TAXON == 'Actinopterygii' & MitoRec$PValue <=0.01,]) / nrow(MitoRec[MitoRec$TAXON == 'Actinopterygii',]) # 11%
+nrow(MitoRec[MitoRec$TAXON == 'Amphibia' & MitoRec$PValue <=0.01,]) / nrow(MitoRec[MitoRec$TAXON == 'Amphibia',]) # 0%
 
 
 ### names(MitoRec)
