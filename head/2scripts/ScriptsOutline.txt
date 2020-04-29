@@ -1,3 +1,23 @@
+
+###### 30 Apr 2020: 
+скачал все кодонные выравнивания полиморфизмов (терминальные ветки) всех хордовых (.terminals.nuc.fa) из МутСпека и положил эти 4964 файла в /MtDnaRecombination/body/1raw/PolymorphismsFromMutSpec/MutSpecTerminalsNucFa/
+
+сd home/agmikhaylova
+cp ./*/*.terminals.nuc.fa /home/kpopadin/MutSpecTerminalsNucFa/
+cp: cannot stat `./ATP6/Hypoplectrus_puella.ATP6.terminals.nuc.fa': No such file or directory
+cp: cannot stat `./ATP8/Papio_anubis.ATP8.terminals.nuc.fa': No such file or directory
+cp: cannot stat `./COX1/Ursus_thibetanus.COX1.terminals.nuc.fa': No such file or directory
+cp: will not overwrite just-created `/home/kpopadin/MutSpecTerminalsNucFa/Acanthogobius_hasta.ND2.terminals.nuc.fa' with `./work_shell/Acanthogobius_hasta.ND2.terminals.nuc.fa'
+cp: will not overwrite just-created `/home/kpopadin/MutSpecTerminalsNucFa/Nannoperca_obscura.ND1.terminals.nuc.fa' with `./work_shell/Nannoperca_obscura.ND1.terminals.nuc.fa'
+cp: will not overwrite just-created `/home/kpopadin/MutSpecTerminalsNucFa/Sphenodon_punctatus.ATP8.terminals.nuc.fa' with `./work_shell/Sphenodon_punctatus.ATP8.terminals.nuc.fa'
+cd /home/kpopadin/MutSpecTerminalsNucFa/
+ls -l | wc -l # 4965
+
+все это в одном файле и по названию можно понять вид и ген: Abbottina_obtusirostris.CytB.terminals.nuc.fa
+Так что легко будет гнать скрипт сразу для всех зверей
+
+###### START
+
 0. Надо сохранить от Али ВСЕ полиморфизмы от ВСЕХ зверей и прогнать их.
 
 1. downlloaded and played with mike6.
@@ -28,6 +48,8 @@ CollectMike6Results.sh
 MtDnaRecombination/body/3result/Cytb.mike6.10.txt => 
 MtDnaRecombination/body/1raw/MitGenomics.txt => 
 MitoGenomicsAndRecomb.R
+
+
 
 
 
