@@ -1,10 +1,13 @@
 #!/bin/sh
 
 # Directories, Programs, 
-InputDir=/home/popadin/MtDnaRecombination/body/2derived/PolymorphismsFromMutSpec/CytbTerminalBranches
-OutputFile=/home/popadin/MtDnaRecombination/body/3results/Cytb.mike6.10.txt
+#InputDir=/home/popadin/MtDnaRecombination/body/2derived/PolymorphismsFromMutSpec/CytbTerminalBranches
+#OutputFile=/home/popadin/MtDnaRecombination/body/3results/Cytb.mike6.10.txt
 
-myfilenames=`ls $InputDir/*.terminals.nuc.fa.mike6.10.txt`  # extension   
+InputDir=/home/popadin/MtDnaRecombination/body/2derived/PolymorphismsFromMutSpec/MutSpecTerminalsNucFa
+OutputFile=/home/popadin/MtDnaRecombination/body/3results/AllGenes.mike6.10_50.txt
+
+myfilenames=`ls $InputDir/*.mike6.txt`  # extension   
 #myfilenames=`ls $InputDir/Abbottina_obtusirostris.CytB.terminals.nuc.fa`  #extansion 
 
 echo -e "NameOfFile\tMethod\tCorCoeff\tPValue" > $OutputFile # make new file
@@ -26,6 +29,18 @@ for eachfile in $myfilenames
 		Line3="$line"
 		echo -e "$NameOfFile\t$Line1$Line2$Line3" >> $OutputFile
 	fi
+
+	if [[ $line == *"PEARSON CORRELATION COEFFICIENT BETWEEN LINKAGE DESEQUILIBRIUM MEASURED AS |D'| AND DISTANCE"* ]] 
+	   then 
+		Line1="$line"
+		IFS= read -r line
+		IFS= read -r line
+		Line2="$line"
+		IFS= read -r line
+		Line3="$line"
+		echo -e "$NameOfFile\t$Line1$Line2$Line3" >> $OutputFile
+	fi
+	
     done < "$input"
  done
    

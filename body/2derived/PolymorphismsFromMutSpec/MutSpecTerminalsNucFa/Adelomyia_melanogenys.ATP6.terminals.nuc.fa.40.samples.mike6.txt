@@ -1,0 +1,32 @@
+enter your file's name>>
+Relationship between LD and distance - Mike6.c Version 1.00
+______________________________________________________________________________________________
+
+Wed May  6 17:58:20 2020
+
+Input file: /home/popadin/MtDnaRecombination/body/2derived/PolymorphismsFromMutSpec/MutSpecTerminalsNucFa/temp6.txt
+
+More than 2 alleles segregating at position :
+36 - 119 - 179 - 287 - 443 - 464 - 503 - 570 - 602 - 641 - 650 - 
+These positions were removed from LD-distance analysis
+
+
+Number of sequences:40 
+Number of aligned nucleotides :681 
+
+Number of polymorphic sites:133
+
+
+---- PEARSON CORRELATION COEFFICIENT BETWEEN LINKAGE DESEQUILIBRIUM MEASURED AS R SQUARE AND DISTANCE ----
+
+	Correlation coefficient : 0.009
+	P-value : 0.673
+	Number of randomizations : 1000
+
+
+---- PEARSON CORRELATION COEFFICIENT BETWEEN LINKAGE DESEQUILIBRIUM MEASURED AS |D'| AND DISTANCE----
+
+	Correlation coefficient : -0.076
+	P-value : 0.000
+	Number of randomizations : 1000
+

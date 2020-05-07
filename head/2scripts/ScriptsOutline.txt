@@ -1,3 +1,35 @@
+##### 7 Mai 2020:
+ 
+## 1:  tried to compile maxchi-4.2 -> no success
+http://www.lifesci.sussex.ac.uk/CSE/test/maxchi.php (maxchi-4.2.tar.gz)
+extract here; cd /Downloads/maxchi-4.2; gcc maxchi4_2.c -o maxchi4_2 -lm; # some warning...
+execute ./maxchi4_2 # 	command not found...
+./maxchi4_2 < /home/popadin/MtDnaRecombination/body/2derived/PolymorphismsFromMutSpec/MutSpecTerminalsNucFa/temp6.txt > temp7.txt # segmentation fault (core dumped)
+
+## 2: changed CallMike6.sh so that it works with all species (chordata) all available mtDNA genes (max 13) and walks from 10, 20 , 30 , 40 and 50 samples (if availalbe).
+InputDir=/home/popadin/MtDnaRecombination/body/1raw/PolymorphismsFromMutSpec/MutSpecTerminalsNucFa
+OutputDir=/home/popadin/MtDnaRecombination/body/2derived/PolymorphismsFromMutSpec/MutSpecTerminalsNucFa
+
+## 3: changed CollectMike6Results.sh so that it collects not only 
+"PEARSON CORRELATION COEFFICIENT BETWEEN LINKAGE DESEQUILIBRIUM MEASURED AS R SQUARE AND DISTANCE"
+but also 
+"PEARSON CORRELATION COEFFICIENT BETWEEN LINKAGE DESEQUILIBRIUM MEASURED AS |D'| AND DISTANCE"
+Thus now, we have results from two related LD versus distance tests: 
+1) LDr^2; This method looks at the correlation between the measure of Linkage disequilibrium, r2 (Hill and Robertson 1966), and the distance between sites.
+Significance is assessed by a Mantel test as described in Piganeau and Eyre-Walker (2004b).
+2) LDD'; This method looks at the correlation between the measure of Linkage disequilibrium, D' (Lewontin 1968), and the distance between sites. Significance is assessed by a Mantel test as described in Piganeau and Eyre-Walker (2004b).
+
+## 4: added R script RecombResultsCollector.R
+=> Rec = read.table('../../body/3results/AllGenes.mike6.10_50.txt', header = TRUE, sep='\t', quote = '')
+RecombResultsCollector.R
+=> write.table(Rec, file = "../../body/3results/AllGenes.mike6.10_50.Res.txt", row.names = FALSE, quote = FALSE)
+NameOfFile Method CorCoeff PValue Species Gene Samples
+Abbottina_rivularis.CytB.terminals.nuc.fa.10.samples.mike6.txt RSquareAndDistance -0.029 0.25 Abbottina_rivularis CytB 10
+Abbottina_rivularis.CytB.terminals.nuc.fa.10.samples.mike6.txt DAndDistance -0.061 0.095 Abbottina_rivularis CytB 10
+Abramis_brama.CytB.terminals.nuc.fa.10.samples.mike6.txt RSquareAndDistance -0.287 0.046 Abramis_brama CytB 10
+Abramis_brama.CytB.terminals.nuc.fa.10.samples.mike6.txt DAndDistance -0.12 0.16 Abramis_brama CytB 10
+Abrothrix_longipilis.CytB.terminals.nuc.fa.10.samples.mike6.txt RSquareAndDistance -0.022 0.056 Abrothrix_longipilis CytB 10
+
 
 ###### 30 Apr 2020: 
 скачал все кодонные выравнивания полиморфизмов (терминальные ветки) всех хордовых (.terminals.nuc.fa) из МутСпека и положил эти 4964 файла в /MtDnaRecombination/body/1raw/PolymorphismsFromMutSpec/MutSpecTerminalsNucFa/
@@ -17,6 +49,7 @@ ls -l | wc -l # 4965
 Так что легко будет гнать скрипт сразу для всех зверей
 
 ###### START
+
 
 0. Надо сохранить от Али ВСЕ полиморфизмы от ВСЕХ зверей и прогнать их.
 

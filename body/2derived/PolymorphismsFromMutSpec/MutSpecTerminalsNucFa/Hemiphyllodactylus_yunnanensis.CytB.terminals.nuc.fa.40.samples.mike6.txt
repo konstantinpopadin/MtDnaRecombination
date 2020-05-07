@@ -1,0 +1,32 @@
+enter your file's name>>
+Relationship between LD and distance - Mike6.c Version 1.00
+______________________________________________________________________________________________
+
+Wed May  6 18:14:07 2020
+
+Input file: /home/popadin/MtDnaRecombination/body/2derived/PolymorphismsFromMutSpec/MutSpecTerminalsNucFa/temp6.txt
+
+More than 2 alleles segregating at position :
+6 - 8 - 9 - 20 - 27 - 32 - 41 - 62 - 68 - 83 - 101 - 107 - 110 - 113 - 116 - 122 - 132 - 134 - 135 - 140 - 143 - 146 - 167 - 180 - 182 - 185 - 191 - 194 - 197 - 200 - 218 - 227 - 233 - 239 - 257 - 281 - 287 - 293 - 296 - 299 - 302 - 305 - 317 - 323 - 332 - 347 - 350 - 353 - 365 - 368 - 386 - 395 - 398 - 416 - 425 - 428 - 446 - 456 - 458 - 467 - 470 - 479 - 497 - 509 - 512 - 554 - 557 - 566 - 569 - 572 - 581 - 584 - 590 - 593 - 608 - 611 - 614 - 626 - 629 - 632 - 638 - 639 - 640 - 653 - 656 - 686 - 687 - 689 - 692 - 697 - 698 - 699 - 700 - 701 - 708 - 710 - 713 - 716 - 719 - 721 - 722 - 725 - 731 - 735 - 740 - 746 - 752 - 773 - 782 - 783 - 791 - 794 - 809 - 836 - 842 - 845 - 848 - 863 - 866 - 869 - 875 - 878 - 884 - 887 - 902 - 908 - 914 - 915 - 917 - 918 - 920 - 929 - 930 - 931 - 943 - 956 - 957 - 959 - 962 - 966 - 968 - 969 - 983 - 986 - 998 - 1016 - 1019 - 1028 - 1034 - 1058 - 1067 - 1068 - 1079 - 1080 - 1088 - 1089 - 1096 - 1100 - 1101 - 1115 - 1120 - 1121 - 1122 - 
+These positions were removed from LD-distance analysis
+
+
+Number of sequences:40 
+Number of aligned nucleotides :1134 
+
+Number of polymorphic sites:306
+
+
+---- PEARSON CORRELATION COEFFICIENT BETWEEN LINKAGE DESEQUILIBRIUM MEASURED AS R SQUARE AND DISTANCE ----
+
+	Correlation coefficient : -0.025
+	P-value : 0.018
+	Number of randomizations : 500
+
+
+---- PEARSON CORRELATION COEFFICIENT BETWEEN LINKAGE DESEQUILIBRIUM MEASURED AS |D'| AND DISTANCE----
+
+	Correlation coefficient : -0.025
+	P-value : 0.044
+	Number of randomizations : 500
+
