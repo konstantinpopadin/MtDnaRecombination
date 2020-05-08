@@ -1,29 +1,37 @@
 rm(list=ls(all=TRUE))  # remove everything from R memory (old variables, datasets...) 
 
 Mito = read.table('../../body/1raw/MitGenomics.txt', header=TRUE, sep='\t')
-Rec = read.table('../../body/3results/Cytb.mike6.10.txt', header = TRUE, sep='\t')
+Rec = read.table('../../body/3results/AllGenes.mike6.10_50.Res.txt', header = TRUE, sep = ' ')
 
-## little tuning
-Rec$Species = gsub('.CytB.terminals.nuc.fa.mike6.10.txt','',Rec$NameOfFile)
-Rec$PValue = as.numeric(as.character(gsub('P-value : ','',Rec$PValue))); summary(Rec$PValue)
-Rec$CorCoeff = as.numeric(as.character(gsub('Correlation coefficient : ','',Rec$CorCoeff))); summary(Rec$CorCoeff)
-Rec$Method  = gsub('---- PEARSON CORRELATION COEFFICIENT BETWEEN LINKAGE DESEQUILIBRIUM MEASURED AS R SQUARE AND DISTANCE ----','RSquareAndDistance',Rec$Method)
+pdf("../../body/4figures/RecombAnalyses01.pdf", )
 
-## analysis of R^2
-plot(Rec$PValue,Rec$CorCoeff) # low p values correspond to negative coefficients
-plot(Rec$CorCoeff,-log10(Rec$PValue)) 
+## analysis of p value and corr coeff
+plot(Rec[Rec$Method == 'RSquareAndDistance',]$CorCoeff,-log10(Rec[Rec$Method == 'RSquareAndDistance',]$PValue)) # low p values correspond to negative coefficients
+plot(Rec[Rec$Method == 'DAndDistance',]$CorCoeff,-log10(Rec[Rec$Method == 'DAndDistance',]$PValue)) # low p values correspond to negative coefficients
 
 ## merge Rec with chordata mito info
 MitoRec=merge(Mito,Rec, by = 'Species'); nrow(MitoRec) # 495
+summary(MitoRec$PValue) # there are some zeroes!! Check mike6 outputs 
+MitoRec$MinLogTenPvalue = -log10(MitoRec$PValue+0.0000000001)
+summary(MitoRec$MinLogTenPvalue)
 
 ## in mammals - TandRep versus Recomb
-cor.test(MitoRec[MitoRec$TAXON == 'Mammalia',]$REP.NumberOfTandemRepeats,-log10(MitoRec[MitoRec$TAXON == 'Mammalia',]$PValue), method = 'spearman')
-boxplot(MitoRec[MitoRec$TAXON == 'Mammalia' & MitoRec$PValue < 0.1,]$REP.NumberOfTandemRepeats,MitoRec[MitoRec$TAXON == 'Mammalia' & MitoRec$PValue >= 0.1,]$REP.NumberOfTandemRepeats, notch = TRUE, outline = FALSE)
-boxplot(MitoRec[MitoRec$TAXON == 'Mammalia' & MitoRec$PValue < 0.1,]$REP.LengthOfTandemRepeats,MitoRec[MitoRec$TAXON == 'Mammalia' & MitoRec$PValue >= 0.1,]$REP.LengthOfTandemRepeats, notch = TRUE, outline = FALSE)
 
-boxplot(MitoRec[MitoRec$TAXON == 'Mammalia' & MitoRec$REP.NumberOfTandemRepeats == 0,]$PValue,MitoRec[MitoRec$TAXON == 'Mammalia' & MitoRec$REP.NumberOfTandemRepeats > 0,]$PValue, notch = TRUE, outline = FALSE)
+temp = MitoRec[MitoRec$TAXON == 'Mammalia' & MitoRec$Method == 'RSquareAndDistance' & MitoRec$Samples == 10,] 
+table(temp$REP.NumberOfTandemRepeats)
+#   0   1   2   3   4   5   6  11 
+# 279 187 101  38  44  19   1   9
+summary(glm(temp$REP.NumberOfTandemRepeats ~ temp$MinLogTenPvalue, family = 'poisson'))
+#  (Intercept)           0.22091    0.03743   5.901 3.61e-09 ***
+#  temp$MinLogTenPvalue  0.04711    0.01817   2.593   0.0095 ** 
 
-#### 
+temp = MitoRec[MitoRec$TAXON == 'Mammalia' & MitoRec$Method == 'DAndDistance' & MitoRec$Samples == 10,] 
+summary(glm(temp$REP.NumberOfTandemRepeats ~ temp$MinLogTenPvalue, family = 'poisson'))
+#  (Intercept)           0.15857    0.04561   3.477 0.000507 ***
+#  temp$MinLogTenPvalue  0.10859    0.03086   3.518 0.000434 ***
+
+
+####  
 
 nrow(MitoRec[MitoRec$TAXON == 'Mammalia',]) # 224
 nrow(MitoRec[MitoRec$TAXON == 'Mammalia' & MitoRec$PValue <= 0.05,]) # 33
