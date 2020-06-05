@@ -1,6 +1,16 @@
 rm(list=ls(all=TRUE))  # remove everything from R memory (old variables, datasets...) 
 
-pdf("../../body/4figures/05.B.RecombAndTandRepInMammals.R.pdf")
+if (!require(ggstatsplot)) install.packages("ggstatsplot")
+if (!require(dplyr)) install.packages("dplyr")
+if (!require(ggplot2)) install.packages("ggplot2")
+if (!require(cowplot)) install.packages("cowplot")
+
+library(ggstatsplot)
+library(ggplot2)
+library(dplyr)
+library(cowplot)
+
+# pdf("../../body/4figures/05.B.RecombAndTandRepInMammals.R.pdf")
 
 #### 01: Load the list of mammalian species with complete MitoGenomes (only for them we have TR indo)
 Mito = read.table('../../body/1raw/MitGenomics.txt', header=TRUE, sep='\t')
@@ -79,6 +89,29 @@ summary(lm(Pvalue ~ GCCont + NumberT.Cons, data = RecTr))
 
 ##### 06 Plot the best result:
 
+
+plot1 = ggstatsplot::ggscatterstats(
+  data = RecTr,
+  x = ConsensusLengthMean,
+  y = Pvalue,
+  type = 'np',
+  xlab = "Consensus length",
+  ylab = "p-value"
+  # label.expression = "Pvalue > 0.5 & ConsensusLengthMean > 60",
+)
+
+
+plot2 = ggstatsplot::ggscatterstats(
+  data = RecTr,
+  x = GCCont,
+  y = Pvalue,
+  type = 'np',
+  xlab = "GC content",
+  ylab = "p-value"
+  # label.expression = "Pvalue > 0.5 & ConsensusLengthMean > 60",
+)
+
+
 ### 06.A median PI value in a subsets of species ranked according to the length of TR consensus and 1-GC
 ## ConsensusLengthMean
 RecTr = RecTr[order(RecTr$ConsensusLengthMean),]
@@ -90,21 +123,25 @@ for (i in 1:nrow(RecTr))
   Final = rbind(Final,c(i,median(temp$Pvalue)))
 }
 names(Final)=c('TandRepConsensusLengthRank','MedianPiValue')
-plot(Final$TandRepConsensusLengthRank,Final$MedianPiValue)
+plot3 = ggplot(Final, aes(TandRepConsensusLengthRank, MedianPiValue)) +
+  geom_point() + theme_cowplot() +
+  xlab('Rank of consensus length') + ylab('Median p-value')
 
 ## AT content
 RecTr$ATCont = 1-RecTr$GCCont
 summary(RecTr$ATCont)
 RecTr = RecTr[order(RecTr$ATCont),]
-Final = data.frame()
+Final1 = data.frame()
 Nrow = nrow(RecTr)
 for (i in 1:nrow(RecTr))
 { # i = 0
   temp = RecTr[c(i:Nrow),]
-  Final = rbind(Final,c(i,median(temp$Pvalue)))
+  Final1 = rbind(Final1,c(i,median(temp$Pvalue)))
 }
-names(Final)=c('ATCont','MedianPiValue')
-plot(Final$ATCont,Final$MedianPiValue)
+names(Final1)=c('ATCont', 'MedianPiValue')
+plot4 = ggplot(Final1, aes(ATCont, MedianPiValue)) +
+  geom_point() + theme_cowplot() +
+  xlab('Rank of AT content') + ylab('Median p-value')
 
 ### 06.B median PI in a subsets of species with different length of TR consensus and 1-GC
 summary(RecTr$ConsensusLengthMean)
@@ -124,7 +161,71 @@ length(long[long < 0.05])/length(long)
 ## and Alina can check if this difference is significant (pair-wise Fisher test 2x2 or even better 3x2)
 # (this would be good in your diploma)
 
-## and Alina can draw mosaicplot 3x2 (this would be good in your diploma): 
+# split consensus length with median and p-value with 0.05 and create dummy
+
+ConsMedian = median(RecTr$ConsensusLengthMean)
+a = RecTr %>% mutate(dummyCons = case_when(.$ConsensusLengthMean > ConsMedian ~ 1, 
+                                   .$ConsensusLengthMean <= ConsMedian ~ 0))
+
+a = a %>% mutate(dummyPvalue = case_when(.$Pvalue >= 0.05 ~ 0, 
+                                           .$Pvalue < 0.05 ~ 1))
+
+plot5 = ggstatsplot::ggbarstats(
+  data = a,
+  x = dummyPvalue,
+  y = dummyCons,
+  xlab = 'Consensus length',
+  legend.title = "p-value",
+  ggplot.component = list(scale_x_discrete(labels = c('0' = 'short', '1' = 'long')),
+                          scale_fill_manual(values = c("red", "gray"), labels = c('<0.05', '>=0.05')))
+)
+
+cont_table = table(as.factor(a$dummyCons), as.factor(a$dummyPvalue))
+
+fisher.test(cont_table) # for 2x2 table
+
+# data:  cont_table
+# p-value = 0.0217
+# alternative hypothesis: true odds ratio is not equal to 1
+# 95 percent confidence interval:
+#   1.093795 6.396826
+# sample estimates:
+#   odds ratio 
+# 2.560209
+
+# split consensus length into three groups
+
+percent75 = quantile(RecTr$ConsensusLengthMean, 0.75)
+RecTr = a %>% mutate(dummyCons = case_when(.$ConsensusLengthMean >= ConsMedian & .$ConsensusLengthMean < percent75 ~ 1, 
+                                           .$ConsensusLengthMean < ConsMedian ~ 0,
+                                           .$ConsensusLengthMean >= percent75 ~ 2))
+
+plot6 = ggstatsplot::ggbarstats(
+  data = RecTr,
+  x = dummyPvalue,
+  y = dummyCons,
+  xlab = 'Consensus length',
+  legend.title = "p-value",
+  ggplot.component = list(scale_x_discrete(labels = c('0' = 'short', '1' = 'medium', '2' = 'long')),
+                          scale_fill_manual(values = c("red", "gray"), labels = c('<0.05', '>=0.05')))
+)
+
+
+
+cont_table = table(as.factor(RecTr$dummyCons), as.factor(RecTr$dummyPvalue))
+
+fisher.test(cont_table)
+
+# data:  cont_table
+# p-value = 0.05873
+# alternative hypothesis: two.sided
+
+
+for(i in 1:nrow(RecTr)){
+  if(RecTr[i,]$ConsensusLengthMean < median(RecTr$ConsensusLengthMean)){
+    RecTr[i, 'ConsensusLength']
+  }
+}
 
 ## and Alina can do pi1 statistics (fraction of truth hypothesis - look my Down syndrome paper)
 # library(qvalue), 1-pi1
@@ -150,4 +251,9 @@ ShortAndAtRich = RecTr[RecTr$ConsensusLengthMean < median(RecTr$ConsensusLengthM
 LongAndAtPoor = RecTr[RecTr$ConsensusLengthMean >= median(RecTr$ConsensusLengthMean) & RecTr$GCcontMean > quantile(RecTr$GCcontMean,0.75),]
 ShortAndAtPoor = RecTr[RecTr$ConsensusLengthMean < median(RecTr$ConsensusLengthMean) & RecTr$GCcontMean > quantile(RecTr$GCcontMean,0.75),]
 
-dev.off()
+vecPlots = c(plot1, plot2, plot3, plot4, plot5, plot6)
+
+allPlots = plot_grid(plot1, plot2, plot3, plot4, plot5, plot6, nrow = 3, ncol = 2)
+save_plot("../../body/4figures/05.B.RecombAndTandRepInMammals.R.pdf", allPlots, ncol = 2, nrow = 3)
+
+# dev.off()
